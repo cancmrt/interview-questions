@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script>
+
+
+var data = [{"title":"event 1", "date":"2014/09/25"},
+            {"title":"event 2", "date":"2014/09/26","enddate":"2014/09/29"},
+            {"title":"event 3", "date":"2014/09/27"},
+            {"title":"event 4", "date":"2014/09/30"}];
+
+function drawCalendar(){
+
+    var myTable = document.getElementById('calendarTable').getElementsByTagName('tbody')[0];
+    var month = new Date().getMonth();
+    var year = new Date().getFullYear();
+    var days = new Date(year,month+1,0).getDate();
+    
+    var beginningOfMonth = new Date(year,month,1);
+    var lookUpWhichDay = beginningOfMonth.getDay();
+    var everyNewRow = myTable.insertRow();
+    var cellShouldbe = 7 * 5;
+    console.log(lookUpWhichDay);
+    console.log(beginningOfMonth);
+    if(lookUpWhichDay == 0){
+        lookUpWhichDay = 7;
+    }
+    
+    for(var i=0; i<(lookUpWhichDay-1); i++){
+        var insertedCell = everyNewRow.insertCell(-1);
+        insertedCell.id = "OutOfRange"+i;
+        cellShouldbe--;
+    }
+    
+    for(var i=lookUpWhichDay; i<days; i++){
+        if(i%7 == 0){
+            var insertedCell = everyNewRow.insertCell(-1);
+            insertedCell.innerHTML += "<i>"+(i-(lookUpWhichDay-1))+"</i>";
+            insertedCell.id = (i-(lookUpWhichDay-1));
+            everyNewRow = myTable.insertRow();
+        }
+        else{
+            var insertedCell = everyNewRow.insertCell(-1);
+            insertedCell.innerHTML += "<i>"+(i-(lookUpWhichDay-1))+"</i>";
+            insertedCell.id = (i-(lookUpWhichDay-1));
+        }
+        cellShouldbe--;
+    }
+    for(var i=((days-lookUpWhichDay)+1); i<=days; i++){
+        if(cellShouldbe > 0){
+            var insertedCell = everyNewRow.insertCell(-1);
+            insertedCell.innerHTML += "<i>"+i+"</i>";
+            insertedCell.id = i;
+        }
+        else{
+            everyNewRow = myTable.insertRow();
+            var insertedCell = everyNewRow.insertCell(-1);
+            insertedCell.innerHTML += "<i>"+i+"</i>";
+            insertedCell.id = i;
+            cellShouldbe = 7;
+        }
+        cellShouldbe--;
+        
+
+    }
+    console.log(cellShouldbe);
+    for(var i=0; i<cellShouldbe; i++){
+        everyNewRow.insertCell(-1);
+    }
+    searchInDate(data);
+
+}
+function searchInDate(rangeData){
+
+    for(var i=0; i<rangeData.length; i++){
+        var range = rangeData[i];
+        if(range.hasOwnProperty('enddate')){
+            var date = new Date(range.date);
+            var endDate = new Date(range.enddate);
+            date = date.getDate();
+            endDate = endDate.getDate();
+           
+            var element = document.getElementById(date);
+            for(var j=date; j<=endDate; j++){
+                var element = document.getElementById(j);
+                element.innerHTML += "<div class='w-100 bg-success text-white'>"+range.title+"</div>"
+            }
+           
+        }
+        else{
+            var date = new Date(range.date);
+            date = date.getDate();
+            var element = document.getElementById(date);
+            element.innerHTML += "<div class='w-100 bg-success text-white'>"+range.title+"</div>"
+        }
+    }
+    
+}
+
+
+
+
+window.addEventListener("load",drawCalendar,false);
+
+
+</script>
+
+
+
+
+<table id="calendarTable" class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Pazartesi</td>
+            <td>Salı</td>
+            <td>Çarşamba</td>
+            <td>Perşembe</td>
+            <td>Cuma</td>
+            <td>Cumartesi</td>
+            <td>Pazar</td>
+        </tr>
+        
+    </thead>
+    <tbody>
+
+    </tbody>
+
+
+</table>
